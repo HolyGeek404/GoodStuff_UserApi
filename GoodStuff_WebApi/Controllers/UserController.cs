@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Model.DataAccess.DBSets;
 using Model.Services.Interfaces;
 
@@ -9,6 +10,7 @@ namespace WebApi.Controllers;
 public class UserController(IUserService userService) : Controller
 {
     [HttpPost]
+    [Authorize(Roles = "Base")]
     [Route("signup")]
     public async Task<IActionResult> SignUp(User model)
     {
@@ -25,6 +27,7 @@ public class UserController(IUserService userService) : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Base")]
     [Route("getuserbyemail/{email}")]
     public async Task<IActionResult> GetUserByEmail(string email)
     {
