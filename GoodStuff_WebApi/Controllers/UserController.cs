@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Model.DataAccess.DBSets;
 using Model.Services.Interfaces;
 
@@ -9,6 +10,7 @@ namespace WebApi.Controllers;
 public class UserController(IUserService userService) : Controller
 {
     [HttpPost]
+    [Authorize(Roles = "Base")]
     [Route("signup")]
     public async Task<IActionResult> SignUp(User model)
     {
@@ -21,16 +23,35 @@ public class UserController(IUserService userService) : Controller
             return CreatedAtAction(nameof(GetUserByEmail), new { email = model.Email }, model);
         }
 
-        return BadRequest(new { message = "User already exists" });
+        return BadRequest();
     }
 
     [HttpGet]
-    [Route("getuserbyemail/{email}")]
+    [Authorize(Roles = "Base")]
+    [Route("signin")]
+    public async Task<IActionResult> SignIn(string email, string password)
+    {
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            return BadRequest();
+
+        var user = await userService.SignIn(email, password);
+
+        if (user == null)
+            return Unauthorized();
+
+        return Ok(user);
+    }
+
+    [HttpGet]   
+    [Authorize(Roles = "Base")]
+    [Route("getuserbyemail")]
     public async Task<IActionResult> GetUserByEmail(string email)
     {
         var user = await userService.GetUserByEmail(email);
+
         if (user == null)
-            return NotFound(new { message = "User not found" });
+            return NotFound();
+
         return Ok(user);
     }
 }

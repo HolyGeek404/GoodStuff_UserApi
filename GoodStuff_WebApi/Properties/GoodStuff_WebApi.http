@@ -1,6 +1,0 @@
-@GoodStuff_WebApi_HostAddress = http://localhost:5155
-
-GET {{GoodStuff_WebApi_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

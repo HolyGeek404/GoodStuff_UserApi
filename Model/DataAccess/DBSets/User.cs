@@ -18,7 +18,7 @@ public class User
     [EmailAddress]
     public string Email { get; set; }
 
-    [Required, StringLength(16)]
+    [Required, StringLength(60)]
     [PasswordPropertyText]
     public string Password { get; set; }
 
