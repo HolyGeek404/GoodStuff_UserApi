@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Model.DataAccess.Context;
 
@@ -11,9 +12,11 @@ using Model.DataAccess.Context;
 namespace Model.Migrations
 {
     [DbContext(typeof(PgpContext))]
-    partial class PGPContextModelSnapshot : ModelSnapshot
+    [Migration("20250519083641_IncreasedPasswordLength")]
+    partial class IncreasedPasswordLength
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

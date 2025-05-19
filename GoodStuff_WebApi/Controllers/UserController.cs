@@ -23,7 +23,23 @@ public class UserController(IUserService userService) : Controller
             return CreatedAtAction(nameof(GetUserByEmail), new { email = model.Email }, model);
         }
 
-        return BadRequest(new { message = "User already exists" });
+        return BadRequest("User already exists");
+    }
+
+    [HttpPost]
+    [Authorize(Roles = "Base")]
+    [Route("signin")]
+    public async Task<IActionResult> SignIn(string email, string password)
+    {
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            return BadRequest("Email and password are required");
+
+        var user = await userService.SignIn(email, password);
+
+        if (user == null)
+            return Unauthorized("Email or password is invalid.");
+
+        return Ok(user);
     }
 
     [HttpGet]
@@ -32,8 +48,10 @@ public class UserController(IUserService userService) : Controller
     public async Task<IActionResult> GetUserByEmail(string email)
     {
         var user = await userService.GetUserByEmail(email);
+
         if (user == null)
-            return NotFound(new { message = "User not found" });
+            return NotFound("User not found");
+
         return Ok(user);
     }
 }

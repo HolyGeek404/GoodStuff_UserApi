@@ -14,16 +14,24 @@ public class UserService(IUserDao userDao, IPasswordService passwordService) : I
 
         if (existingUser != null)
         {
-            return false; // User already exists
+            return false; 
         }
 
-        // Hash the password before saving
         model.Password = passwordService.HashPassword(model.Password);
 
         await userDao.SignUp(model);
         return true;
     }
 
+    public async Task<User?> SignIn(string email, string password)
+    {
+        var user = await userDao.GetUserByEmail(email);
+        if (user == null || !passwordService.VerifyPassword(password, user.Password))
+        {
+            return null;
+        }
+        return user;
+    }
     public async Task<User?> GetUserByEmail(string email)
     {
         return await userDao.GetUserByEmail(email);

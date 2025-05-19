@@ -15,9 +15,6 @@ public class UserDao(PgpContext context) : IUserDao
 
     public async Task<User?> GetUserByEmail(string email)
     {
-        await using (context)
-        {
-            return await context.User.FirstOrDefaultAsync(u => u.Email == email);
-        }
+        return await context.User.FirstOrDefaultAsync(u => u.Email == email);
     }
 }
