@@ -23,34 +23,34 @@ public class UserController(IUserService userService) : Controller
             return CreatedAtAction(nameof(GetUserByEmail), new { email = model.Email }, model);
         }
 
-        return BadRequest("User already exists");
+        return BadRequest();
     }
 
-    [HttpPost]
+    [HttpGet]
     [Authorize(Roles = "Base")]
     [Route("signin")]
     public async Task<IActionResult> SignIn(string email, string password)
     {
         if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
-            return BadRequest("Email and password are required");
+            return BadRequest();
 
         var user = await userService.SignIn(email, password);
 
         if (user == null)
-            return Unauthorized("Email or password is invalid.");
+            return Unauthorized();
 
         return Ok(user);
     }
 
-    [HttpGet]
+    [HttpGet]   
     [Authorize(Roles = "Base")]
-    [Route("getuserbyemail/{email}")]
+    [Route("getuserbyemail")]
     public async Task<IActionResult> GetUserByEmail(string email)
     {
         var user = await userService.GetUserByEmail(email);
 
         if (user == null)
-            return NotFound("User not found");
+            return NotFound();
 
         return Ok(user);
     }
