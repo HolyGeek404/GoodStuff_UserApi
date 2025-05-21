@@ -6,7 +6,7 @@ using Model.Services.Interfaces;
 namespace WebApi.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("[controller]")]
 public class UserController(IUserService userService) : Controller
 {
     [HttpPost]
@@ -31,6 +31,7 @@ public class UserController(IUserService userService) : Controller
     [Route("signin")]
     public async Task<IActionResult> SignIn(string email, string password)
     {
+        Console.WriteLine($"Email: {email}, Password: {password}");
         if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             return BadRequest();
 
