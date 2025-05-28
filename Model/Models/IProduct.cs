@@ -1,6 +1,6 @@
 ﻿namespace Model;
 
-public class ProductsDao
+public interface IProduct
 {
 
 }

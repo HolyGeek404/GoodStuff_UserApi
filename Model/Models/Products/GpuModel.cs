@@ -1,6 +1,6 @@
 namespace Model.Models.Products;
 
-public class GpuModel
+public class GpuModel : IProduct
 {
     public string id { get; set; }
     public string Name { get; set; } = string.Empty;

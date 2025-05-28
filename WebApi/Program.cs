@@ -8,7 +8,7 @@ builder.Services.AddAzureConfig(builder.Configuration);
 builder.Services.AddDataBaseConfig(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-
+builder.Services.AddSwaggerConfig();
 
 var app = builder.Build();
 

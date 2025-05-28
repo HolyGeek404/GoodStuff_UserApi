@@ -4,6 +4,7 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
+using Model;
 using Model.DataAccess;
 using Model.DataAccess.Context;
 using Model.DataAccess.Interfaces;
@@ -19,6 +20,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUserDao, UserDao>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IPasswordService, PasswordService>();
+        services.AddScoped<IProductDao, ProductDao>();   
         return services;
     }
 
@@ -35,6 +37,8 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddDataBaseConfig(this IServiceCollection services, IConfigurationManager configuration)
     {
+        var a = configuration.GetConnectionString("CosmosDB");
+        var aa = configuration.GetConnectionString("SqlDb");
         services.AddDbContext<PgpContext>(options => options.UseSqlServer(configuration.GetConnectionString("SqlDb")));
         services.AddSingleton(s => new CosmosClient(configuration.GetConnectionString("CosmosDB")));
         return services;
