@@ -4,7 +4,6 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
-using Model;
 using Model.DataAccess;
 using Model.DataAccess.Context;
 using Model.DataAccess.Interfaces;

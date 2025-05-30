@@ -1,6 +1,6 @@
-﻿namespace Model;
+﻿namespace Model.DataAccess.Interfaces;
 
 public interface IProductDao
 {
-    List<IProduct> GetAllProductsByType(string type);
+    Task<string> GetAllProductsByType(string type);
 }
