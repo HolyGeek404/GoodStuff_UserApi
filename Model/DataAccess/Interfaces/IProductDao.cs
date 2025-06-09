@@ -2,5 +2,5 @@
 
 public interface IProductDao
 {
-    Task<object> GetAllProductsByType(string type);
+    Task<object?> GetAllProductsByType(string type);
 }

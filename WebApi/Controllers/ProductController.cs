@@ -15,7 +15,7 @@ public class ProductController(IProductDao productDao) : Controller
             return BadRequest("Product type cannot be null or empty.");
 
         var products = await productDao.GetAllProductsByType(type.ToUpper());
-        if (products==null)
+        if (products == null)
             return NotFound($"No products found for type: {type}");
 
         return new JsonResult(products);
