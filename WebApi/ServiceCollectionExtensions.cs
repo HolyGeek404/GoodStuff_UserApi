@@ -19,7 +19,10 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUserDao, UserDao>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IPasswordService, PasswordService>();
-        services.AddScoped<IProductDao, ProductDao>();   
+        services.AddScoped<IProductDao, ProductDao>();
+
+        services.AddMediatR(x => x.RegisterServicesFromAssembly(typeof(ProductDao).Assembly));
+
         return services;
     }
 

@@ -8,6 +8,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="MediatR" Version="12.5.0" />
 		<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.51.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.5">
@@ -20,6 +21,15 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Features\Product\Commands\" />
+	  <Folder Include="Features\Product\Validators\" />
+	  <Folder Include="Features\User\" />
+	  <Folder Include="Features\User\Commands\" />
+	  <Folder Include="Features\User\Queries\" />
+	  <Folder Include="Features\User\Validators\" />
 	</ItemGroup>
 
 </Project>
