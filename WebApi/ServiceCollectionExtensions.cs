@@ -1,4 +1,6 @@
 ﻿using Azure.Identity;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Azure.Cosmos;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +9,7 @@ using Microsoft.OpenApi.Models;
 using Model.DataAccess;
 using Model.DataAccess.Context;
 using Model.DataAccess.Interfaces;
+using Model.Features.User.Validators;
 using Model.Services;
 using Model.Services.Interfaces;
 
@@ -21,7 +24,14 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IPasswordService, PasswordService>();
         services.AddScoped<IProductDao, ProductDao>();
 
+        return services;
+    }
+
+    public static IServiceCollection AddMediatRConfig(this IServiceCollection services)
+    {
         services.AddMediatR(x => x.RegisterServicesFromAssembly(typeof(ProductDao).Assembly));
+        services.AddValidatorsFromAssemblyContaining<SignUpCommandValidator>();
+        services.AddFluentValidationAutoValidation();
 
         return services;
     }
@@ -39,8 +49,6 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddDataBaseConfig(this IServiceCollection services, IConfigurationManager configuration)
     {
-        var a = configuration.GetConnectionString("CosmosDB");
-        var aa = configuration.GetConnectionString("SqlDb");
         services.AddDbContext<PgpContext>(options => options.UseSqlServer(configuration.GetConnectionString("SqlDb")));
         services.AddSingleton(s => new CosmosClient(configuration.GetConnectionString("CosmosDB")));
         return services;

@@ -3,6 +3,7 @@ using WebApi;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddServices();
+builder.Services.AddMediatRConfig();
 builder.Services.AddAzureConfig(builder.Configuration);
 builder.Services.AddDataBaseConfig(builder.Configuration);
 builder.Services.AddControllers();

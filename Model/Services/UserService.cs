@@ -1,25 +1,30 @@
 ﻿using Model.DataAccess.DBSets;
 using Model.DataAccess.Interfaces;
+using Model.Features.User.Commands;
 using Model.Services.Interfaces;
 
 namespace Model.Services;
 
 public class UserService(IUserDao userDao, IPasswordService passwordService) : IUserService
 {
-    public async Task<bool> SignUp(User model)
+    public async Task<bool> SignUp(SignUpCommand model)
     {
-        model.CreatedAt = DateTime.UtcNow;
-
         var existingUser = await userDao.GetUserByEmail(model.Email);
-
         if (existingUser != null)
         {
             return false; 
         }
 
-        model.Password = passwordService.HashPassword(model.Password);
+        var user = new User
+        {
+            Name = model.Name,
+            Surname = model.Surname,
+            Email = model.Email,
+            Password = passwordService.HashPassword(model.Password),
+            CreatedAt = DateTime.UtcNow
+        };
 
-        await userDao.SignUp(model);
+        await userDao.SignUp(user);
         return true;
     }
 
