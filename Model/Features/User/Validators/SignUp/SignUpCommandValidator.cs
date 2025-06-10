@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Model.Features.User.Commands;
+using Model.Features.User.Commands.SignUp;
 
 namespace Model.Features.User.Validators;
 

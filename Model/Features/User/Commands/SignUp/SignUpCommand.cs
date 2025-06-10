@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Model.Features.User.Commands;
+namespace Model.Features.User.Commands.SignUp;
 
 public record SignUpCommand : IRequest<bool>
 {

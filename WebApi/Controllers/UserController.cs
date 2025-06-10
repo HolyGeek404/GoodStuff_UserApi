@@ -1,8 +1,7 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Model.DataAccess.DBSets;
-using Model.Features.User.Commands;
+using Model.Features.User.Commands.SignUp;
+using Model.Features.User.Queries;
 
 namespace WebApi.Controllers;
 
@@ -18,38 +17,24 @@ public class UserController(IMediator mediator) : Controller
         var result = await mediator.Send(signUpCommand);
         if (result)
         {
-            return CreatedAtAction(nameof(GetUserByEmail), new { email = signUpCommand.Email }, signUpCommand);
+            return CreatedAtAction(nameof(SignIn), new { email = signUpCommand.Email }, signUpCommand);
         }
 
         return BadRequest();
     }
 
-    // [HttpGet]
-    // [Authorize(Roles = "Base")]
-    // [Route("signin")]
-    // public async Task<IActionResult> SignIn(string email, string password)
-    // {
-    //     Console.WriteLine($"Email: {email}, Password: {password}");
-    //     if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
-    //         return BadRequest();
-
-    //     var user = await userService.SignIn(email, password);
-
-    //     if (user == null)
-    //         return Unauthorized();
-
-    //     return Ok(user);
-    // }
-
     [HttpGet]
-    [Authorize(Roles = "Base")]
-    [Route("getuserbyemail")]
-    public async Task<IActionResult> GetUserByEmail(string email)
+    // [Authorize(Roles = "Base")]
+    [Route("signin")]
+    public async Task<IActionResult> SignIn(string email, string password)
     {
-        //var user = await userService.GetUserByEmail(email);
-        var user = new User();
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            return BadRequest();
+
+        var user = await mediator.Send(new SignInQuery { Email = email, Password = password });
+
         if (user == null)
-            return NotFound();
+            return Unauthorized();
 
         return Ok(user);
     }

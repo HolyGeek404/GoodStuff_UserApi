@@ -2,7 +2,7 @@
 
 namespace Model.DataAccess.DBSets;
 
-public class User
+public class Users
 {
     [Key]
     public int UserId { get; set; }
