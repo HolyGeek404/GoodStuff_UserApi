@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Model.DataAccess.Interfaces;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Model.Features.Product.Queries.GetAllProductsByType;
 
 namespace WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ProductController(IProductDao productDao) : Controller
+public class ProductController(IMediator mediator) : Controller
 {
     [HttpGet]
     [Route("getallproductsbytype")]
@@ -14,8 +15,8 @@ public class ProductController(IProductDao productDao) : Controller
         if (string.IsNullOrEmpty(type))
             return BadRequest("Product type cannot be null or empty.");
 
-        var products = await productDao.GetAllProductsByType(type.ToUpper());
-        if (products==null)
+        var products = await mediator.Send(new GetAllProductsByTypeQuery{Type = type.ToUpper()});
+        if (products == null)
             return NotFound($"No products found for type: {type}");
 
         return new JsonResult(products);

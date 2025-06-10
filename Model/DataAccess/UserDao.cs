@@ -7,13 +7,13 @@ namespace Model.DataAccess;
 
 public class UserDao(PgpContext context) : IUserDao
 {
-    public async Task SignUp(User user)
+    public async Task SignUp(Users user)
     {
         context.User.Add(user);
         await context.SaveChangesAsync();
     }
 
-    public async Task<User?> GetUserByEmail(string email)
+    public async Task<Users?> GetUserByEmail(string email)
     {
         return await context.User.FirstOrDefaultAsync(u => u.Email == email);
     }
