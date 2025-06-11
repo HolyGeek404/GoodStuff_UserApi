@@ -54,34 +54,46 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddSwaggerConfig(this IServiceCollection services)
+    public static IServiceCollection AddSwaggerConfig(this IServiceCollection services, IConfiguration configuration)
     {
+        var azureAd = configuration.GetSection("AzureAd");
+        var clientId = azureAd["ClientId"];
+        var tenantId = azureAd["TenantId"];
+        var authority = $"https://login.microsoftonline.com/{tenantId}/v2.0";
+
         services.AddSwaggerGen(c =>
-        {
-            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
-                In = ParameterLocation.Header,
-                Description = "Please enter a valid token",
-                Name = "Authorization",
-                Type = SecuritySchemeType.Http,
-                Scheme = "Bearer"
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "GoodStuff WebApi Swagger", Version = "v1" });
+                c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                {
+                    Description = "OAuth2.0 Auth Code with PKCE",
+                    Name = "oauth2",
+                    Type = SecuritySchemeType.OAuth2,
+                    Flows = new OpenApiOAuthFlows
+                    {
+                        AuthorizationCode = new OpenApiOAuthFlow
+                        {
+                            AuthorizationUrl = new Uri($"https://login.microsoftonline.com/{tenantId}/oauth2/v2.0/authorize"),
+                            TokenUrl = new Uri($"https://login.microsoftonline.com/{tenantId}/oauth2/v2.0/token"),//token end point
+                            Scopes = new Dictionary<string, string>
+                                {
+                                    { $"api://{clientId}/default", "Base rights" },
+                                }
+                        }
+                    }
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
+                        },
+                        new[] { $"api://{clientId}/default" }
+                    }
+                });
             });
 
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                    },
-                    new List<string>()
-                }
-            });
-        });
         return services;
     }
 }

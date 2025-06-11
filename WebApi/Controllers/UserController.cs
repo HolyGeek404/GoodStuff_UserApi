@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.Features.User.Commands.SignUp;
 using Model.Features.User.Queries;
@@ -10,7 +11,7 @@ namespace WebApi.Controllers;
 public class UserController(IMediator mediator) : Controller
 {
     [HttpPost]
-    // [Authorize(Roles = "Base")]
+    [Authorize(Roles = "Base")]
     [Route("signup")]
     public async Task<IActionResult> SignUp(SignUpCommand signUpCommand)
     {
@@ -24,7 +25,7 @@ public class UserController(IMediator mediator) : Controller
     }
 
     [HttpGet]
-    // [Authorize(Roles = "Base")]
+    [Authorize(Roles = "Base")]
     [Route("signin")]
     public async Task<IActionResult> SignIn(string email, string password)
     {

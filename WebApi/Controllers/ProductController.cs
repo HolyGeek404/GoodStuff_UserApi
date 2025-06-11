@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.Features.Product.Queries.GetAllProductsByType;
 
@@ -9,6 +10,7 @@ namespace WebApi.Controllers;
 public class ProductController(IMediator mediator) : Controller
 {
     [HttpGet]
+    [Authorize(Roles = "Base")]
     [Route("getallproductsbytype")]
     public async Task<IActionResult> GetAllProductsByType(string type)
     {
