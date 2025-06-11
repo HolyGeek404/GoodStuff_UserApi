@@ -8,20 +8,20 @@ builder.Services.AddAzureConfig(builder.Configuration);
 builder.Services.AddDataBaseConfig(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerConfig();
+builder.Services.AddSwaggerConfig(builder.Configuration);
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "GoodStuff WebApi v1");
+    c.OAuthClientId(builder.Configuration["Swagger:SwaggerClientId"]);
+    c.OAuthUsePkce();
+    c.OAuthScopeSeparator(" ");
 }
-else
-{
-    app.UseHttpsRedirection();
-}
-
+    );
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
