@@ -1,7 +1,7 @@
 using MediatR;
 using Model.DataAccess.DBSets;
 
-namespace Model.Features.User.Queries;
+namespace Model.Features.User.Queries.SignIn;
 
 public record SignInQuery : IRequest<Users?>
 {

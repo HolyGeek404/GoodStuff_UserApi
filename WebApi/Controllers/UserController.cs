@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.Features.User.Commands.SignUp;
 using Model.Features.User.Queries;
+using Model.Features.User.Queries.SignIn;
 
 namespace WebApi.Controllers;
 

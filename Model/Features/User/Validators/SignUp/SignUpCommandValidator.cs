@@ -1,8 +1,7 @@
 ﻿using FluentValidation;
-using Model.Features.User.Commands;
 using Model.Features.User.Commands.SignUp;
 
-namespace Model.Features.User.Validators;
+namespace Model.Features.User.Validators.SignUp;
 
 public class SignUpCommandValidator : AbstractValidator<SignUpCommand>
 {

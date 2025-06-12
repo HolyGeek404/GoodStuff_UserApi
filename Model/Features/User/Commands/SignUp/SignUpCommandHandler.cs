@@ -1,8 +1,7 @@
 ﻿using MediatR;
-using Model.Features.User.Commands.SignUp;
 using Model.Services.Interfaces;
 
-namespace Model.Features.User.Commands;
+namespace Model.Features.User.Commands.SignUp;
 
 public class SignUpCommandHandler(IUserService userService) : IRequestHandler<SignUpCommand, bool>
 {

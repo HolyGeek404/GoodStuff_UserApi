@@ -9,11 +9,11 @@ using Microsoft.OpenApi.Models;
 using Model.DataAccess;
 using Model.DataAccess.Context;
 using Model.DataAccess.Interfaces;
-using Model.Features.User.Validators;
+using Model.Features.User.Validators.SignUp;
 using Model.Services;
 using Model.Services.Interfaces;
 
-namespace WebApi;
+namespace WebApi.Extensions;
 
 public static class ServiceCollectionExtensions
 {

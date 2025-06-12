@@ -1,4 +1,4 @@
-﻿namespace WebApi;
+﻿namespace WebApi.Extensions;
 
 public static class LoggingExtension
 {
