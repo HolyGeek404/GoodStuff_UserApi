@@ -11,7 +11,7 @@ using Model.DataAccess.Context;
 
 namespace Model.Migrations
 {
-    [DbContext(typeof(PgpContext))]
+    [DbContext(typeof(GoodStuffContext))]
     [Migration("20250512111409_AddUserTable")]
     partial class AddUserTable
     {

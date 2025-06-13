@@ -10,7 +10,7 @@ using Model.DataAccess.Context;
 
 namespace Model.Migrations
 {
-    [DbContext(typeof(PgpContext))]
+    [DbContext(typeof(GoodStuffContext))]
     partial class PGPContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

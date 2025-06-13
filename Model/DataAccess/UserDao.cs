@@ -5,7 +5,7 @@ using Model.DataAccess.Interfaces;
 
 namespace Model.DataAccess;
 
-public class UserDao(PgpContext context) : IUserDao
+public class UserDao(GoodStuffContext context) : IUserDao
 {
     public async Task SignUp(Users user)
     {

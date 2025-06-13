@@ -22,14 +22,13 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUserDao, UserDao>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IPasswordService, PasswordService>();
-        services.AddScoped<IProductDao, ProductDao>();
 
         return services;
     }
 
     public static IServiceCollection AddMediatRConfig(this IServiceCollection services)
     {
-        services.AddMediatR(x => x.RegisterServicesFromAssembly(typeof(ProductDao).Assembly));
+        services.AddMediatR(x => x.RegisterServicesFromAssembly(typeof(UserDao).Assembly));
         services.AddValidatorsFromAssemblyContaining<SignUpCommandValidator>();
         services.AddFluentValidationAutoValidation();
 
@@ -40,7 +39,7 @@ public static class ServiceCollectionExtensions
     {
         var azureAd = configuration.GetSection("AzureAd");
 
-        configuration.AddAzureKeyVault(new Uri(azureAd["KvUrl"]), new DefaultAzureCredential());
+        configuration.AddAzureKeyVault(new Uri(azureAd["KvUrl"]!), new DefaultAzureCredential());
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddMicrosoftIdentityWebApi(azureAd);
 
@@ -49,7 +48,7 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddDataBaseConfig(this IServiceCollection services, IConfigurationManager configuration)
     {
-        services.AddDbContext<PgpContext>(options => options.UseSqlServer(configuration.GetConnectionString("SqlDb")));
+        services.AddDbContext<GoodStuffContext>(options => options.UseSqlServer(configuration.GetConnectionString("SqlDb")));
         services.AddSingleton(s => new CosmosClient(configuration.GetConnectionString("CosmosDB")));
         return services;
     }
@@ -63,7 +62,7 @@ public static class ServiceCollectionExtensions
 
         services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "GoodStuff WebApi Swagger", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "GoodStuff User Api Swagger", Version = "v1" });
                 c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
                     Description = "OAuth2.0 Auth Code with PKCE",
@@ -74,7 +73,7 @@ public static class ServiceCollectionExtensions
                         AuthorizationCode = new OpenApiOAuthFlow
                         {
                             AuthorizationUrl = new Uri($"https://login.microsoftonline.com/{tenantId}/oauth2/v2.0/authorize"),
-                            TokenUrl = new Uri($"https://login.microsoftonline.com/{tenantId}/oauth2/v2.0/token"),//token end point
+                            TokenUrl = new Uri($"https://login.microsoftonline.com/{tenantId}/oauth2/v2.0/token"),
                             Scopes = new Dictionary<string, string>
                                 {
                                     { $"api://{clientId}/default", "Base rights" },

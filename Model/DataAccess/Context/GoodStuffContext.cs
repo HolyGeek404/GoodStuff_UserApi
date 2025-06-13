@@ -3,7 +3,7 @@ using Model.DataAccess.DBSets;
 
 namespace Model.DataAccess.Context;
 
-public partial class PgpContext(DbContextOptions<PgpContext> options) : DbContext(options)
+public partial class GoodStuffContext(DbContextOptions<GoodStuffContext> options) : DbContext(options)
 {
     public DbSet<Users> User { get; set; }
 
