@@ -1,4 +1,3 @@
-using WebApi;
 using WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,7 +16,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "GoodStuff WebApi v1");
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "GoodStuff User Api v1");
     c.OAuthClientId(builder.Configuration["Swagger:SwaggerClientId"]);
     c.OAuthUsePkce();
     c.OAuthScopeSeparator(" ");
