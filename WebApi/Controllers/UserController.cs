@@ -12,7 +12,7 @@ namespace WebApi.Controllers;
 public class UserController(IMediator mediator) : Controller
 {
     [HttpPost]
-    [Authorize(Roles = "Base")]
+    [Authorize(Roles = "SignUp")]
     [Route("signup")]
     public async Task<IActionResult> SignUp(SignUpCommand signUpCommand)
     {
@@ -26,7 +26,7 @@ public class UserController(IMediator mediator) : Controller
     }
 
     [HttpGet]
-    [Authorize(Roles = "Base")]
+    [Authorize(Roles = "SignIn")]
     [Route("signin")]
     public async Task<IActionResult> SignIn(string email, string password)
     {
