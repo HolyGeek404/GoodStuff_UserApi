@@ -1,6 +1,7 @@
 ﻿using Azure.Identity;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Azure.Cosmos;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using Model.DataAccess;
 using Model.DataAccess.Context;
 using Model.DataAccess.Interfaces;
+using Model.Features;
 using Model.Features.User.Validators.SignUp;
 using Model.Services;
 using Model.Services.Interfaces;
@@ -29,6 +31,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddMediatRConfig(this IServiceCollection services)
     {
         services.AddMediatR(x => x.RegisterServicesFromAssembly(typeof(UserDao).Assembly));
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddValidatorsFromAssemblyContaining<SignUpCommandValidator>();
         services.AddFluentValidationAutoValidation();
 
