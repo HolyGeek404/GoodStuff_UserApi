@@ -1,8 +1,7 @@
 ﻿using FluentValidation;
-using Model.Features.User.Commands;
 using Model.Features.User.Commands.SignUp;
 
-namespace Model.Features.User.Validators;
+namespace Model.Features.User.Validators.SignUp;
 
 public class SignUpCommandValidator : AbstractValidator<SignUpCommand>
 {
@@ -23,6 +22,5 @@ public class SignUpCommandValidator : AbstractValidator<SignUpCommand>
         RuleFor(x => x.Password)
         .NotEmpty().WithMessage("You have to provide your Password")
         .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$").WithMessage("Password must contains one: upercase, numer, special character and be at least 8 long.");
-
     }
 }

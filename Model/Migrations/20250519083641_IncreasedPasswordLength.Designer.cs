@@ -11,7 +11,7 @@ using Model.DataAccess.Context;
 
 namespace Model.Migrations
 {
-    [DbContext(typeof(PgpContext))]
+    [DbContext(typeof(GoodStuffContext))]
     [Migration("20250519083641_IncreasedPasswordLength")]
     partial class IncreasedPasswordLength
     {

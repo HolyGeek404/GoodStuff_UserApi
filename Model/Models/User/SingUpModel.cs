@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Model.Models;
+namespace Model.Models.User;
 
 public class SingUpModel
 {

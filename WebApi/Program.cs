@@ -1,4 +1,4 @@
-using WebApi;
+using WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,12 +10,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerConfig(builder.Configuration);
 
-var app = builder.Build();
+builder.Logging.AddLoggingConfig();
 
+var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "GoodStuff WebApi v1");
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "GoodStuff User Api v1");
     c.OAuthClientId(builder.Configuration["Swagger:SwaggerClientId"]);
     c.OAuthUsePkce();
     c.OAuthScopeSeparator(" ");
