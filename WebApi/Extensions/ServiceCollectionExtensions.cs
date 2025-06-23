@@ -58,9 +58,8 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddSwaggerConfig(this IServiceCollection services, IConfiguration configuration)
     {
-        var azureAd = configuration.GetSection("AzureAd");
-        var clientId = azureAd["ClientId"];
-        var tenantId = azureAd["TenantId"];
+        var tenantId = configuration.GetSection("AzureAd")["TenantId"];
+        var swaggerScope = configuration.GetSection("Swagger")["Scope"];
         var authority = $"https://login.microsoftonline.com/{tenantId}/v2.0";
 
         services.AddSwaggerGen(c =>
@@ -79,7 +78,7 @@ public static class ServiceCollectionExtensions
                             TokenUrl = new Uri($"https://login.microsoftonline.com/{tenantId}/oauth2/v2.0/token"),
                             Scopes = new Dictionary<string, string>
                                 {
-                                    { $"api://{clientId}/default", "Base rights" },
+                                    { $"{swaggerScope}", "Base rights" },
                                 }
                         }
                     }
@@ -91,7 +90,7 @@ public static class ServiceCollectionExtensions
                         {
                             Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
                         },
-                        new[] { $"api://{clientId}/default" }
+                        new[] { $"{swaggerScope}" }
                     }
                 });
             });
