@@ -8,7 +8,7 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class UserController(IMediator mediator, ILogger<UserController> logger) : Controller
+public class UserController(IMediator mediator, ILogger<UserController> logger) : ControllerBase
 {
     [HttpPost]
     [Authorize(Roles = "SignUp")]
