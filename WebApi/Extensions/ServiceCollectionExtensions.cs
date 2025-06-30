@@ -78,7 +78,7 @@ public static class ServiceCollectionExtensions
                             TokenUrl = new Uri($"https://login.microsoftonline.com/{tenantId}/oauth2/v2.0/token"),
                             Scopes = new Dictionary<string, string>
                                 {
-                                    { $"{swaggerScope}", "Base rights" },
+                                    { $"{swaggerScope}", "Swagger - Local testing" },
                                 }
                         }
                     }
