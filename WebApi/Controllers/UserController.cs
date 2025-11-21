@@ -15,40 +15,40 @@ public class UserController(IMediator mediator, ILogger<UserController> logger) 
     [Route("signup")]
     public async Task<IActionResult> SignUp(SignUpCommand signUpCommand)
     {
-        logger.LogInformation($"Called {nameof(SignUp)} by {User.FindFirst("appid")?.Value ?? "Unknown"}");
+        logger.LogInformation("Called {SignUpName} by {Unknown}", nameof(SignUp), User.FindFirst("appid")?.Value ?? "Unknown");
 
         var result = await mediator.Send(signUpCommand);
         if (result)
         {
-            logger.LogInformation($"Successfully registered new user {signUpCommand.Email}. Called by {User.FindFirst("appid")?.Value ?? "Unknown"}");
+            logger.LogInformation("Successfully registered new user {Email}. Called by {Unknown}", signUpCommand.Email, User.FindFirst("appid")?.Value ?? "Unknown");
             return CreatedAtAction(nameof(SignIn), new { email = signUpCommand.Email }, signUpCommand);
         }
 
-        logger.LogInformation($"Couldn't register user {signUpCommand.Email}. Called by {User.FindFirst("appid")?.Value ?? "Unknown"}");
+        logger.LogInformation("Couldn't register user {Email}. Called by {Unknown}", signUpCommand.Email, User.FindFirst("appid")?.Value ?? "Unknown");
         return BadRequest();
     }
 
-    [HttpGet]
+    [HttpPost]
     [Authorize(Roles = "SignIn")]
     [Route("signin")]
-    public async Task<IActionResult> SignIn(string email, string password)
+    public async Task<IActionResult> SignIn([FromBody]  SignInQuery signInQuery)
     {
-        logger.LogInformation($"Called {nameof(SignUp)} by {User.FindFirst("appid")?.Value ?? "Unknown"}");
+        logger.LogInformation("Called {SignUpName} by {Unknown}", nameof(SignUp), User.FindFirst("appid")?.Value ?? "Unknown");
 
-        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+        if (string.IsNullOrEmpty(signInQuery.Email) || string.IsNullOrEmpty(signInQuery.Password))
         {
             logger.LogInformation($"Couldn't sign in because email or password is empty");
             return BadRequest();
         }
 
-        var user = await mediator.Send(new SignInQuery { Email = email, Password = password });
+        var user = await mediator.Send(signInQuery);
 
         if (user == null)
         {
             return Unauthorized();
         }
 
-        logger.LogInformation($"Successfully signed in user {email}. Called {nameof(SignUp)} by {User.FindFirst("appid")?.Value ?? "Unknown"}");
+        logger.LogInformation("Successfully signed in user {Email}. Called {SignUpName} by {Unknown}", signInQuery.Email, nameof(SignUp), User.FindFirst("appid")?.Value ?? "Unknown");
         return Ok(user);
     }
 }
