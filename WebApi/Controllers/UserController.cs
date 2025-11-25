@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.Features.User.Commands.SignUp;
 using Model.Features.User.Queries.SignIn;
+using Model.Models.User;
+using Model.Services;
 
 namespace WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class UserController(IMediator mediator, ILogger<UserController> logger) : ControllerBase
+public class UserController(IMediator mediator, ILogger<UserController> logger, IUserSessionService sessionService) : ControllerBase
 {
     [HttpPost]
     [Authorize(Roles = "SignUp")]
@@ -42,13 +44,46 @@ public class UserController(IMediator mediator, ILogger<UserController> logger) 
         }
 
         var user = await mediator.Send(signInQuery);
-
+        
         if (user == null)
         {
             return Unauthorized();
         }
+        
+        var sessionId = sessionService.CreateSession(user);
+        var userModel = new UserModel
+        {
+            Email = user.Email,
+            Name = user.Name,
+            Surname = user.Surname,
+            SessionId = sessionId,
+        };
 
         logger.LogInformation("Successfully signed in user {Email}. Called {SignUpName} by {Unknown}", signInQuery.Email, nameof(SignUp), User.FindFirst("appid")?.Value ?? "Unknown");
-        return Ok(user);
+        return Ok(userModel);
+    }
+
+    [HttpPost]
+    [Route("SignOut")]
+    [Authorize(Roles = "SignOut")]
+    public IActionResult SignOut([FromBody] string sessionId)
+    {
+        logger.LogInformation("SignOut request received. SessionId: {SessionId}", sessionId);
+
+        try
+        {
+            logger.LogInformation("Clearing cached user data for SessionId: {SessionId}", sessionId);
+
+            sessionService.ClearUserCachedData(sessionId);
+
+            logger.LogInformation("Successfully signed out user. SessionId: {SessionId}", sessionId);
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An error occurred while signing out user. SessionId: {SessionId}", sessionId);
+            return StatusCode(500, "Internal server error during sign-out.");
+        }
     }
 }
