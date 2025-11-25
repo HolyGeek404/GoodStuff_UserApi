@@ -9,7 +9,7 @@ builder.Services.AddDataBaseConfig(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerConfig(builder.Configuration);
-
+builder.Services.AddMemoryCache();
 builder.Logging.AddLoggingConfig();
 
 var app = builder.Build();

@@ -13,7 +13,7 @@ public class UserService(IUserDao userDao, IPasswordService passwordService, ILo
         var existingUser = await userDao.GetUserByEmail(model.Email);
         if (existingUser != null)
         {
-            logger.LogInformation($"User {model.Email} already exist.");
+            logger.LogInformation("User {ModelEmail} already exist.", model.Email);
             return false;
         }
 
@@ -33,13 +33,12 @@ public class UserService(IUserDao userDao, IPasswordService passwordService, ILo
     public async Task<Users?> SignIn(string email, string password)
     {
         var user = await userDao.GetUserByEmail(email);
-        if (user == null || !passwordService.VerifyPassword(password, user.Password))
-        {
-            logger.LogInformation($"Invalid credentials for {email}.");
-            return null;
-        }
+        if (user != null && passwordService.VerifyPassword(password, user.Password)) 
+            return user;
+        logger.LogInformation("Invalid credentials for {Email}.", email);
+        
+        return null;
 
-        return user;
     }
     public async Task<Users?> GetUserByEmail(string email)
     {
