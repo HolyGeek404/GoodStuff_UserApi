@@ -64,25 +64,25 @@ public class UserController(IMediator mediator, ILogger<UserController> logger, 
     }
 
     [HttpPost]
-    [Route("SignOut")]
+    [Route("signout")]
     [Authorize(Roles = "SignOut")]
-    public IActionResult SignOut([FromBody] string sessionId)
+    public IActionResult SignOut([FromBody] SignOutRequest signOutRequest)
     {
-        logger.LogInformation("SignOut request received. SessionId: {SessionId}", sessionId);
+        logger.LogInformation("SignOut request received. SessionId: {SessionId}", signOutRequest);
 
         try
         {
-            logger.LogInformation("Clearing cached user data for SessionId: {SessionId}", sessionId);
+            logger.LogInformation("Clearing cached user data for SessionId: {SessionId}", signOutRequest);
 
-            sessionService.ClearUserCachedData(sessionId);
+            sessionService.ClearUserCachedData(signOutRequest.SessionId);
 
-            logger.LogInformation("Successfully signed out user. SessionId: {SessionId}", sessionId);
+            logger.LogInformation("Successfully signed out user. SessionId: {SessionId}", signOutRequest);
 
-            return Ok();
+            return Ok(true);
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error occurred while signing out user. SessionId: {SessionId}", sessionId);
+            logger.LogError(ex, "An error occurred while signing out user. SessionId: {SessionId}", signOutRequest.SessionId);
             return StatusCode(500, "Internal server error during sign-out.");
         }
     }
