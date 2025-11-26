@@ -15,7 +15,7 @@ public class UserController(IMediator mediator, ILogger<UserController> logger, 
     [HttpPost]
     [Authorize(Roles = "SignUp")]
     [Route("signup")]
-    public async Task<IActionResult> SignUp(SignUpCommand signUpCommand)
+    public async Task<IActionResult> SignUp([FromBody] SignUpCommand signUpCommand)
     {
         logger.LogInformation("Called {SignUpName} by {Unknown}", nameof(SignUp), User.FindFirst("appid")?.Value ?? "Unknown");
 
@@ -33,7 +33,7 @@ public class UserController(IMediator mediator, ILogger<UserController> logger, 
     [HttpPost]
     [Authorize(Roles = "SignIn")]
     [Route("signin")]
-    public async Task<IActionResult> SignIn([FromBody]  SignInQuery signInQuery)
+    public async Task<IActionResult> SignIn([FromBody] SignInQuery signInQuery)
     {
         logger.LogInformation("Called {SignUpName} by {Unknown}", nameof(SignUp), User.FindFirst("appid")?.Value ?? "Unknown");
 
