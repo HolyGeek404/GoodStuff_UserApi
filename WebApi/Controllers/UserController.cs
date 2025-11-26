@@ -23,7 +23,13 @@ public class UserController(IMediator mediator, ILogger<UserController> logger, 
         if (result)
         {
             logger.LogInformation("Successfully registered new user {Email}. Called by {Unknown}", signUpCommand.Email, User.FindFirst("appid")?.Value ?? "Unknown");
-            return CreatedAtAction(nameof(SignIn), new { email = signUpCommand.Email }, signUpCommand);
+            var userModel = new UserModel
+            {
+                Email = signUpCommand.Email,
+                Name = signUpCommand.Name,
+                Surname = signUpCommand.Surname
+            };
+            return CreatedAtAction(nameof(SignIn), new { email = signUpCommand.Email }, userModel);
         }
 
         logger.LogInformation("Couldn't register user {Email}. Called by {Unknown}", signUpCommand.Email, User.FindFirst("appid")?.Value ?? "Unknown");
