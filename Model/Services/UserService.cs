@@ -6,7 +6,11 @@ using Model.Services.Interfaces;
 
 namespace Model.Services;
 
-public class UserService(IUserDao userDao, IPasswordService passwordService, ILogger<UserService> logger) : IUserService
+public class UserService(
+    IUserDao userDao,
+    IEmailNotificationFunctionClient emailNotificationFunctionClient,
+    IPasswordService passwordService,
+    ILogger<UserService> logger) : IUserService
 {
     public async Task<bool> SignUp(SignUpCommand model)
     {
@@ -17,16 +21,21 @@ public class UserService(IUserDao userDao, IPasswordService passwordService, ILo
             return false;
         }
 
+        var activationKey = Guid.NewGuid();
         var user = new Users
         {
             Name = model.Name,
             Surname = model.Surname,
             Email = model.Email,
             Password = passwordService.HashPassword(model.Password),
-            CreatedAt = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            IsActive = false,
+            ActivationKey = activationKey
         };
 
         await userDao.SignUp(user);
+        await emailNotificationFunctionClient.SendVerificationEmail(user.Email, activationKey);
+        
         return true;
     }
 

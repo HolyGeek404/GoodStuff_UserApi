@@ -25,6 +25,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IPasswordService, PasswordService>();
         services.AddScoped<IUserSessionService, UserSessionService>();
+        services.AddScoped<IEmailNotificationFunctionClient, EmailNotificationFunctionClient>();
 
         return services;
     }
@@ -49,7 +50,7 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-
+    
     public static IServiceCollection AddDataBaseConfig(this IServiceCollection services, IConfigurationManager configuration)
     {
         services.AddDbContext<GoodStuffContext>(options => options.UseSqlServer(configuration.GetConnectionString("SqlDb")));
