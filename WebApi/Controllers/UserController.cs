@@ -1,10 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Model.Features.User.Commands.AccountVerification;
+using Model.Features.User.Commands.SignOutCommand;
 using Model.Features.User.Commands.SignUp;
 using Model.Features.User.Queries.SignIn;
 using Model.Models.User;
 using Model.Services;
+using Model.Services.Interfaces;
 
 namespace WebApi.Controllers;
 
@@ -17,12 +20,12 @@ public class UserController(IMediator mediator, ILogger<UserController> logger, 
     [Route("signup")]
     public async Task<IActionResult> SignUp([FromBody] SignUpCommand signUpCommand)
     {
-        logger.LogInformation("Called {SignUpName} by {Unknown}", nameof(SignUp), User.FindFirst("appid")?.Value ?? "Unknown");
+        Logs.LogCalledSignupnameByUnknown(logger, nameof(SignUp), User.FindFirst("appid")?.Value ?? "Unknown");
 
         var result = await mediator.Send(signUpCommand);
         if (result)
         {
-            logger.LogInformation("Successfully registered new user {Email}. Called by {Unknown}", signUpCommand.Email, User.FindFirst("appid")?.Value ?? "Unknown");
+            Logs.LogSuccessfullyRegisteredNewUserEmailCalledByUnknown(logger, signUpCommand.Email, User.FindFirst("appid")?.Value ?? "Unknown");
             var userModel = new UserModel
             {
                 Email = signUpCommand.Email,
@@ -32,7 +35,7 @@ public class UserController(IMediator mediator, ILogger<UserController> logger, 
             return CreatedAtAction(nameof(SignIn), new { email = signUpCommand.Email }, userModel);
         }
 
-        logger.LogInformation("Couldn't register user {Email}. Called by {Unknown}", signUpCommand.Email, User.FindFirst("appid")?.Value ?? "Unknown");
+        Logs.LogCouldnTRegisterUserEmailCalledByUnknown(logger, signUpCommand.Email, User.FindFirst("appid")?.Value ?? "Unknown");
         return BadRequest();
     }
 
@@ -41,11 +44,11 @@ public class UserController(IMediator mediator, ILogger<UserController> logger, 
     [Route("signin")]
     public async Task<IActionResult> SignIn([FromBody] SignInQuery signInQuery)
     {
-        logger.LogInformation("Called {SignUpName} by {Unknown}", nameof(SignUp), User.FindFirst("appid")?.Value ?? "Unknown");
+        Logs.LogCalledSignupnameByUnknown(logger, nameof(SignUp), User.FindFirst("appid")?.Value ?? "Unknown");
 
         if (string.IsNullOrEmpty(signInQuery.Email) || string.IsNullOrEmpty(signInQuery.Password))
         {
-            logger.LogInformation($"Couldn't sign in because email or password is empty");
+            Logs.LogCouldnTSignInBecauseEmailOrPasswordIsEmpty(logger);
             return BadRequest();
         }
 
@@ -65,31 +68,54 @@ public class UserController(IMediator mediator, ILogger<UserController> logger, 
             SessionId = sessionId,
         };
 
-        logger.LogInformation("Successfully signed in user {Email}. Called {SignUpName} by {Unknown}", signInQuery.Email, nameof(SignUp), User.FindFirst("appid")?.Value ?? "Unknown");
+        Logs.LogSuccessfullySignedInUserEmailCalledSignupnameByUnknown(logger, signInQuery.Email, nameof(SignUp), User.FindFirst("appid")?.Value ?? "Unknown");
         return Ok(userModel);
     }
 
     [HttpPost]
     [Route("signout")]
     [Authorize(Roles = "SignOut")]
-    public IActionResult SignOut([FromBody] SignOutRequest signOutRequest)
+    public async Task<IActionResult> SignOut([FromBody] SignOutCommand signOutCommand)
     {
-        logger.LogInformation("SignOut request received. SessionId: {SessionId}", signOutRequest);
+        Logs.LogSignoutRequestReceivedSessionidSessionid(logger, signOutCommand);
 
         try
         {
-            logger.LogInformation("Clearing cached user data for SessionId: {SessionId}", signOutRequest);
+            Logs.LogClearingCachedUserDataForSessionidSessionid(logger, signOutCommand);
+        
+            var result = await mediator.Send(signOutCommand);
 
-            sessionService.ClearUserCachedData(signOutRequest.SessionId);
-
-            logger.LogInformation("Successfully signed out user. SessionId: {SessionId}", signOutRequest);
+            Logs.LogSuccessfullySignedOutUserSessionidSessionid(logger, signOutCommand);
 
             return Ok(true);
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error occurred while signing out user. SessionId: {SessionId}", signOutRequest.SessionId);
+            Logs.LogAnErrorOccurredWhileSigningOutUserSessionidSessionid(logger, ex, signOutCommand.SessionId);
             return StatusCode(500, "Internal server error during sign-out.");
         }
     }
+
+    [HttpPost]
+    [Route("accountverification")]
+    public async Task<IActionResult> AccountVerification([FromBody] AccountVerificationCommand accountVerificationCommand)
+    {
+        Logs.LogAccountverificationEndpointCalledWithPayloadPayload(logger, accountVerificationCommand);
+
+        try
+        {
+            var result = await mediator.Send(accountVerificationCommand);
+
+            Logs.LogAccountVerificationSuccessfulForAccountAccount(logger, accountVerificationCommand.Email);
+
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            Logs.LogErrorOccurredDuringVerificationForAccountAccount(logger, ex, accountVerificationCommand.Email);
+            return StatusCode(500, "An error occurred while verifying the account.");
+        }
+    }
+    
+    
 }

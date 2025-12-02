@@ -6,7 +6,8 @@ namespace Model.Services.Interfaces;
 
 public interface IUserService
 {
-    Task<bool> SignUp(SignUpCommand model);
-    Task<Users?> SignIn(string email, string password);
-    Task<Users?> GetUserByEmail(string email);
+    Task<bool> SignUpAsync(SignUpCommand model);
+    Task<Users?> SignInAsync(string email, string password);
+    Task<Users?> GetUserByEmailAsync(string email);
+    Task<bool> ActivateUserAsync(string email, Guid providedKey);
 }

@@ -4,6 +4,7 @@ namespace Model.DataAccess.Interfaces;
 
 public interface IUserDao
 {
-    Task SignUp(Users user);
-    Task<Users?> GetUserByEmail(string email);
+    Task SignUpAsync(Users user);
+    Task<Users?> GetUserByEmailAsync(string email);
+    Task<bool> ActivateUserAsync(string email, Guid providedKey);
 }

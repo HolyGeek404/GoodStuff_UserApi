@@ -4,6 +4,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Model.DataAccess.DBSets;
 using Model.Models.User;
+using Model.Services.Interfaces;
 
 namespace Model.Services;
 

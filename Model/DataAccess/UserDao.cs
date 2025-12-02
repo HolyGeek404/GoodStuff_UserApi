@@ -3,29 +3,48 @@ using Microsoft.Extensions.Logging;
 using Model.DataAccess.Context;
 using Model.DataAccess.DBSets;
 using Model.DataAccess.Interfaces;
+using Model.Services;
 
 namespace Model.DataAccess;
 
 public class UserDao(GoodStuffContext context, ILogger<UserDao> logger) : IUserDao
 {
-    public async Task SignUp(Users user)
+    public async Task SignUpAsync(Users user)
     {
         try
         {
-            logger.LogInformation($"Adding user {user.Email} to database.");
+            Logs.LogAddingUserUseremailToDatabase(logger, user.Email);
             context.User.Add(user);
             await context.SaveChangesAsync();
-            logger.LogInformation($"Added user {user.Email} to database.");
+            Logs.LogAddedUserUseremailToDatabase(logger, user.Email);
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, $"Couldn't add user {user.Email} to database because: {ex.Message}.");
+            Logs.LogCouldnTAddUserUseremailToDatabaseBecauseExmessage(logger, ex, user.Email, ex.Message);
             throw;
         }
     }
 
-    public async Task<Users?> GetUserByEmail(string email)
+    public async Task<Users?> GetUserByEmailAsync(string email)
     {
         return await context.User.FirstOrDefaultAsync(u => u.Email == email);
+    }
+    
+    public async Task<bool> ActivateUserAsync(string email, Guid providedKey)
+    {
+        var user = await context.User.FirstOrDefaultAsync(u => u.Email == email);
+
+        if (user == null)
+            return false;
+
+        if (user.ActivationKey != providedKey)
+            return false;
+
+        user.IsActive = true;
+        user.UpdatedAt = DateTime.UtcNow;
+        user.ActivationKey = null;
+
+        await context.SaveChangesAsync();
+        return true;
     }
 }

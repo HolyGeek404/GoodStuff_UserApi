@@ -11,7 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerConfig(builder.Configuration);
 builder.Services.AddMemoryCache();
 builder.Logging.AddLoggingConfig();
-
+builder.Services.AddHttpClient();
 var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
