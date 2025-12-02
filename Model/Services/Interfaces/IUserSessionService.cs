@@ -1,7 +1,7 @@
 using Model.DataAccess.DBSets;
 using Model.Models.User;
 
-namespace Model.Services;
+namespace Model.Services.Interfaces;
 
 public interface IUserSessionService
 {

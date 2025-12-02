@@ -8,6 +8,6 @@ public class SignInQueryHandler(IUserService userService) : IRequestHandler<Sign
 {
     public Task<Users?> Handle(SignInQuery request, CancellationToken cancellationToken)
     {
-        return userService.SignIn(request.Email, request.Password);
+        return userService.SignInAsync(request.Email, request.Password);
     }
 }

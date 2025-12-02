@@ -12,45 +12,113 @@ public class UserService(
     IPasswordService passwordService,
     ILogger<UserService> logger) : IUserService
 {
-    public async Task<bool> SignUp(SignUpCommand model)
+    public async Task<bool> SignUpAsync(SignUpCommand model)
     {
-        var existingUser = await userDao.GetUserByEmail(model.Email);
-        if (existingUser != null)
+        try
         {
-            logger.LogInformation("User {ModelEmail} already exist.", model.Email);
-            return false;
+            Logs.LogStartingSignupForEmailEmail(logger, model.Email);
+
+            var existingUser = await userDao.GetUserByEmailAsync(model.Email);
+
+            if (existingUser != null)
+            {
+                Logs.LogUserWithEmailEmailAlreadyExists(logger, model.Email);
+                return false;
+            }
+
+            var activationKey = Guid.NewGuid();
+
+            var user = new Users
+            {
+                Name = model.Name,
+                Surname = model.Surname,
+                Email = model.Email,
+                Password = passwordService.HashPassword(model.Password),
+                CreatedAt = DateTime.UtcNow,
+                IsActive = false,
+                ActivationKey = activationKey
+            };
+
+            await userDao.SignUpAsync(user);
+
+            Logs.LogNewUserCreatedEmailEmailActivationkeyActivationkey(logger, user.Email, user.ActivationKey);
+
+            await emailNotificationFunctionClient.SendVerificationEmail(user.Email, activationKey);
+
+            Logs.LogVerificationEmailSentToEmail(logger, user.Email);
+
+            return true;
         }
-
-        var activationKey = Guid.NewGuid();
-        var user = new Users
+        catch (Exception ex)
         {
-            Name = model.Name,
-            Surname = model.Surname,
-            Email = model.Email,
-            Password = passwordService.HashPassword(model.Password),
-            CreatedAt = DateTime.UtcNow,
-            IsActive = false,
-            ActivationKey = activationKey
-        };
-
-        await userDao.SignUp(user);
-        await emailNotificationFunctionClient.SendVerificationEmail(user.Email, activationKey);
-        
-        return true;
+            Logs.LogErrorOccurredDuringSignupForEmail(logger, ex, model.Email);
+            throw;
+        }
     }
 
-    public async Task<Users?> SignIn(string email, string password)
+    public async Task<Users?> SignInAsync(string email, string password)
     {
-        var user = await userDao.GetUserByEmail(email);
-        if (user != null && passwordService.VerifyPassword(password, user.Password)) 
-            return user;
-        logger.LogInformation("Invalid credentials for {Email}.", email);
-        
-        return null;
+        try
+        {
+            Logs.LogAttemptingSigninForEmailEmail(logger, email);
 
+            var user = await userDao.GetUserByEmailAsync(email);
+
+            if (user != null && passwordService.VerifyPassword(password, user.Password))
+            {
+                Logs.LogUserEmailSuccessfullySignedIn(logger, email);
+                return user;
+            }
+
+            if (user is { IsActive: false })
+            {
+                Logs.LogUserWithEmailEmailIsNotActive(logger, email);
+                return null;
+            }
+
+            Logs.LogInvalidCredentialsForEmail(logger, email);
+            return null;
+        }
+        catch (Exception ex)
+        {
+            Logs.LogErrorOccurredDuringSigninForEmail(logger, ex, email);
+            throw;
+        }
     }
-    public async Task<Users?> GetUserByEmail(string email)
+
+    public async Task<Users?> GetUserByEmailAsync(string email)
     {
-        return await userDao.GetUserByEmail(email);
+        try
+        {
+            Logs.LogFetchingUserByEmailEmail(logger, email);
+            return await userDao.GetUserByEmailAsync(email);
+        }
+        catch (Exception ex)
+        {
+            Logs.LogErrorFetchingUserByEmailEmail(logger, ex, email);
+            throw;
+        }
+    }
+
+    public async Task<bool> ActivateUserAsync(string email, Guid providedKey)
+    {
+        try
+        {
+            Logs.LogAttemptingToActivateUserEmailWithKeyKey(logger, email, providedKey);
+
+            var result = await userDao.ActivateUserAsync(email, providedKey);
+
+            if (result)
+                Logs.LogUserEmailSuccessfullyActivated(logger, email);
+            else
+                Logs.LogActivationFailedInvalidKeyForEmail(logger, email);
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            Logs.LogErrorOccurredWhileActivatingUserEmailWithKeyKey(logger, ex, email, providedKey);
+            throw;
+        }
     }
 }

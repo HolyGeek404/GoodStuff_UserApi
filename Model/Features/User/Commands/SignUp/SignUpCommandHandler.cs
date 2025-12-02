@@ -7,6 +7,6 @@ public class SignUpCommandHandler(IUserService userService) : IRequestHandler<Si
 {
     public Task<bool> Handle(SignUpCommand request, CancellationToken cancellationToken)
     {
-        return userService.SignUp(request);
+        return userService.SignUpAsync(request);
     }
 }
