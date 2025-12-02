@@ -27,11 +27,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="DataAccess\DBSets\"/>
-        <Folder Include="DataAccess\Interfaces\"/>
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\GoodStuff.UserApi.Application\GoodStuff.UserApi.Application.csproj"/>
         <ProjectReference Include="..\GoodStuff.UserApi.Domain\GoodStuff.UserApi.Domain.csproj"/>
     </ItemGroup>

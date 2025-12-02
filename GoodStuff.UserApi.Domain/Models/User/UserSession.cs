@@ -1,5 +1,3 @@
-using GoodStuff.UserApi.Infrastructure.DataAccess.DBSets;
-
 namespace GoodStuff.UserApi.Domain.Models.User;
 
 public class UserSession

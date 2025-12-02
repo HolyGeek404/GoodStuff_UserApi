@@ -1,4 +1,4 @@
-﻿using GoodStuff.UserApi.Infrastructure.DataAccess.DBSets;
+﻿using GoodStuff.UserApi.Domain.Models.User;
 using Microsoft.EntityFrameworkCore;
 
 namespace GoodStuff.UserApi.Infrastructure.DataAccess.Context;

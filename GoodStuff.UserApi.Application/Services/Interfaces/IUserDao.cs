@@ -1,6 +1,6 @@
-﻿using GoodStuff.UserApi.Infrastructure.DataAccess.DBSets;
+﻿using GoodStuff.UserApi.Domain.Models.User;
 
-namespace GoodStuff.UserApi.Infrastructure.DataAccess.Interfaces;
+namespace GoodStuff.UserApi.Application.Services.Interfaces;
 
 public interface IUserDao
 {

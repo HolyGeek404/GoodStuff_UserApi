@@ -1,8 +1,9 @@
 using System.Text;
 using System.Text.Json;
+using GoodStuff.UserApi.Application.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 
-namespace GoodStuff.UserApi.Application.Services;
+namespace GoodStuff.UserApi.Infrastructure;
 
 public class EmailNotificationFunctionClient(HttpClient httpClient, IConfiguration configuration)
     : IEmailNotificationFunctionClient

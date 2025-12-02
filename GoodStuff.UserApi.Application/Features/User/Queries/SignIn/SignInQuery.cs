@@ -1,4 +1,4 @@
-using GoodStuff.UserApi.Infrastructure.DataAccess.DBSets;
+using GoodStuff.UserApi.Domain.Models.User;
 using MediatR;
 
 namespace GoodStuff.UserApi.Application.Features.User.Queries.SignIn;

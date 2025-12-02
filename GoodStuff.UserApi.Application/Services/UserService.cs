@@ -1,7 +1,6 @@
 ﻿using GoodStuff.UserApi.Application.Features.User.Commands.SignUp;
 using GoodStuff.UserApi.Application.Services.Interfaces;
-using GoodStuff.UserApi.Infrastructure.DataAccess.DBSets;
-using GoodStuff.UserApi.Infrastructure.DataAccess.Interfaces;
+using GoodStuff.UserApi.Domain.Models.User;
 using Microsoft.Extensions.Logging;
 
 namespace GoodStuff.UserApi.Application.Services;

@@ -1,5 +1,5 @@
 ﻿using GoodStuff.UserApi.Application.Features.User.Commands.SignUp;
-using GoodStuff.UserApi.Infrastructure.DataAccess.DBSets;
+using GoodStuff.UserApi.Domain.Models.User;
 
 namespace GoodStuff.UserApi.Application.Services.Interfaces;
 

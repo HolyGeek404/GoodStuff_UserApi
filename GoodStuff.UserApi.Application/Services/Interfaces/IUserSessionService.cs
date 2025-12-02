@@ -1,5 +1,4 @@
 using GoodStuff.UserApi.Domain.Models.User;
-using GoodStuff.UserApi.Infrastructure.DataAccess.DBSets;
 
 namespace GoodStuff.UserApi.Application.Services.Interfaces;
 

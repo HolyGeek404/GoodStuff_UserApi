@@ -1,7 +1,7 @@
 ﻿using GoodStuff.UserApi.Application.Services;
+using GoodStuff.UserApi.Application.Services.Interfaces;
+using GoodStuff.UserApi.Domain.Models.User;
 using GoodStuff.UserApi.Infrastructure.DataAccess.Context;
-using GoodStuff.UserApi.Infrastructure.DataAccess.DBSets;
-using GoodStuff.UserApi.Infrastructure.DataAccess.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 

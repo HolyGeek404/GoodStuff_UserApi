@@ -1,7 +1,6 @@
 using System.Security.Cryptography;
 using GoodStuff.UserApi.Application.Services.Interfaces;
 using GoodStuff.UserApi.Domain.Models.User;
-using GoodStuff.UserApi.Infrastructure.DataAccess.DBSets;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
