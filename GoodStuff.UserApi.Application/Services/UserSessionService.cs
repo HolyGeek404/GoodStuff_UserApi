@@ -51,7 +51,7 @@ public class UserSessionService(
             if (sessionId == null) return null;
 
             var cachedKey = GetCacheKey(sessionId);
-            if (cache.TryGetValue(cachedKey, out UserSession? userSession)) userSession!.LastActivity = DateTime.UtcNow;
+            cache.TryGetValue(cachedKey, out UserSession? userSession);
 
             return userSession;
         }
@@ -76,6 +76,7 @@ public class UserSessionService(
                 if (sessionId != null) ClearUserCachedData(sessionId);
                 return false;
             }
+            session.LastActivity = DateTime.UtcNow;
 
             var currentIp = GetClientIpAddress();
             if (currentIp == session.IpAddress) return true;
