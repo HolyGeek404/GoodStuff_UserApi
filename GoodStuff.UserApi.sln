@@ -11,6 +11,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodStuff.UserApi.Applicati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodStuff.UserApi.Domain", "GoodStuff.UserApi.Domain\GoodStuff.UserApi.Domain.csproj", "{203208D4-0B19-414B-93AE-4F6A328C10F7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{95839D92-978D-4572-B067-B666363D255B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{3A2F7822-B9D8-46E7-8B1E-A69BFB100A86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodStuff.UserApi.Application.Tests", "GoodStuff.UserApi.Application.Tests\GoodStuff.UserApi.Application.Tests.csproj", "{ED1F4F28-4140-4580-B4FE-B1A3292B278A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,11 +39,22 @@ Global
 		{203208D4-0B19-414B-93AE-4F6A328C10F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{203208D4-0B19-414B-93AE-4F6A328C10F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{203208D4-0B19-414B-93AE-4F6A328C10F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED1F4F28-4140-4580-B4FE-B1A3292B278A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED1F4F28-4140-4580-B4FE-B1A3292B278A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED1F4F28-4140-4580-B4FE-B1A3292B278A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED1F4F28-4140-4580-B4FE-B1A3292B278A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF37A48F-00C0-40C7-BBBF-473C5D323F24}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3D5A8482-7CAF-479B-A719-3785FDF1B14E} = {95839D92-978D-4572-B067-B666363D255B}
+		{203208D4-0B19-414B-93AE-4F6A328C10F7} = {95839D92-978D-4572-B067-B666363D255B}
+		{81BC193F-CE8D-449B-A6FA-F9E01D46B59D} = {95839D92-978D-4572-B067-B666363D255B}
+		{7A32C58D-131B-4559-93CA-60293D6AB9C5} = {95839D92-978D-4572-B067-B666363D255B}
+		{ED1F4F28-4140-4580-B4FE-B1A3292B278A} = {3A2F7822-B9D8-46E7-8B1E-A69BFB100A86}
 	EndGlobalSection
 EndGlobal

@@ -51,7 +51,7 @@ public class UserSessionService(
             if (sessionId == null) return null;
 
             var cachedKey = GetCacheKey(sessionId);
-            if (cache.TryGetValue(cachedKey, out UserSession? userSession)) userSession!.LastActivity = DateTime.UtcNow;
+            cache.TryGetValue(cachedKey, out UserSession? userSession);
 
             return userSession;
         }
@@ -70,20 +70,23 @@ public class UserSessionService(
             if (session == null) return false;
 
             var sessionAge = DateTime.UtcNow - session.LastActivity;
+            var sessionId = GetSessionIdFromCookie();
+            
             if (sessionAge.TotalMinutes > SessionTimeoutMinutes)
             {
-                var sessionId = GetSessionIdFromCookie();
                 if (sessionId != null) ClearUserCachedData(sessionId);
                 return false;
             }
+            session.LastActivity = DateTime.UtcNow;
 
             var currentIp = GetClientIpAddress();
-            if (currentIp == session.IpAddress) return true;
-            {
-                var sessionId = GetSessionIdFromCookie();
-                if (sessionId != null) ClearUserCachedData(sessionId);
-                return false;
-            }
+            if (currentIp == session.IpAddress) 
+                return true;
+        
+            sessionId = GetSessionIdFromCookie();
+            if (sessionId != null) ClearUserCachedData(sessionId);
+            return false;
+            
         }
         catch (Exception ex)
         {
