@@ -70,8 +70,7 @@ public class UserSessionServiceTests
             c => c.CreateEntry(It.Is<string>(k => k.Contains("user_session_"))),
             Times.Once);
     }
-
-
+    
     [Fact]
     public void GetUserSession_Should_Return_Session_When_Exists()
     {
@@ -121,7 +120,7 @@ public class UserSessionServiceTests
         var session = new UserSession
         {
             IpAddress = "1.1.1.1",
-            LastActivity = DateTime.UtcNow.AddMinutes(10)
+            LastActivity = DateTime.UtcNow.AddMinutes(-10)
         };
 
         var context = CreateHttpContext();
@@ -186,7 +185,24 @@ public class UserSessionServiceTests
         Assert.False(result);
         _cacheMock.Verify(x => x.Remove(It.IsAny<string>()), Times.Once);
     }
+    
+    [Fact]
+    public void Validate_Should_Update_LastActivity_When_Valid()
+    {
+        var session = new UserSession
+        {
+            IpAddress = "1.1.1.1",
+            LastActivity = DateTime.UtcNow.AddMinutes(-5)
+        };
 
+        object? outValue = session;
+        _cacheMock.Setup(c => c.TryGetValue(It.IsAny<object>(), out outValue)).Returns(true);
+        _httpContextAccessorMock.Setup(a => a.HttpContext).Returns(CreateHttpContext());
+
+        _service.Validate();
+
+        Assert.True((DateTime.UtcNow - session.LastActivity).TotalSeconds < 2);
+    }
     [Fact]
     public void ClearUserCachedData_Should_Remove_Cache()
     {

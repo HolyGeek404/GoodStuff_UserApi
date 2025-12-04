@@ -70,21 +70,23 @@ public class UserSessionService(
             if (session == null) return false;
 
             var sessionAge = DateTime.UtcNow - session.LastActivity;
+            var sessionId = GetSessionIdFromCookie();
+            
             if (sessionAge.TotalMinutes > SessionTimeoutMinutes)
             {
-                var sessionId = GetSessionIdFromCookie();
                 if (sessionId != null) ClearUserCachedData(sessionId);
                 return false;
             }
             session.LastActivity = DateTime.UtcNow;
 
             var currentIp = GetClientIpAddress();
-            if (currentIp == session.IpAddress) return true;
-            {
-                var sessionId = GetSessionIdFromCookie();
-                if (sessionId != null) ClearUserCachedData(sessionId);
-                return false;
-            }
+            if (currentIp == session.IpAddress) 
+                return true;
+        
+            sessionId = GetSessionIdFromCookie();
+            if (sessionId != null) ClearUserCachedData(sessionId);
+            return false;
+            
         }
         catch (Exception ex)
         {
