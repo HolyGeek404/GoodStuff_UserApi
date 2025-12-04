@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{3A2F7822-B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodStuff.UserApi.Application.Tests", "GoodStuff.UserApi.Application.Tests\GoodStuff.UserApi.Application.Tests.csproj", "{ED1F4F28-4140-4580-B4FE-B1A3292B278A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodStuff.UserApi.Presentation.Tests", "GoodStuff.UserApi.Presentation.Tests\GoodStuff.UserApi.Presentation.Tests.csproj", "{4117033A-FA95-414A-A620-7E2BC1D58E3F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{ED1F4F28-4140-4580-B4FE-B1A3292B278A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED1F4F28-4140-4580-B4FE-B1A3292B278A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED1F4F28-4140-4580-B4FE-B1A3292B278A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4117033A-FA95-414A-A620-7E2BC1D58E3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4117033A-FA95-414A-A620-7E2BC1D58E3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4117033A-FA95-414A-A620-7E2BC1D58E3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4117033A-FA95-414A-A620-7E2BC1D58E3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,5 +62,6 @@ Global
 		{81BC193F-CE8D-449B-A6FA-F9E01D46B59D} = {95839D92-978D-4572-B067-B666363D255B}
 		{7A32C58D-131B-4559-93CA-60293D6AB9C5} = {95839D92-978D-4572-B067-B666363D255B}
 		{ED1F4F28-4140-4580-B4FE-B1A3292B278A} = {3A2F7822-B9D8-46E7-8B1E-A69BFB100A86}
+		{4117033A-FA95-414A-A620-7E2BC1D58E3F} = {3A2F7822-B9D8-46E7-8B1E-A69BFB100A86}
 	EndGlobalSection
 EndGlobal
