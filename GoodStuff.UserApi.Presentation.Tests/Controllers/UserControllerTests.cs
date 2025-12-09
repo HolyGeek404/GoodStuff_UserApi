@@ -31,7 +31,7 @@ public class UserControllerTests(TestingWebAppFactory factory) : IClassFixture<T
         var guid = new Guid("a0b25888-3f42-489a-80b5-f262effabd25");
         guidProvider.Setup(x => x.Get()).Returns(guid);
 
-        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Test", "anything");
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Test");
         await _client.PostAsJsonAsync("/User/signup", _signUpCommand);
 
         var authCommand = new AccountVerificationCommand
@@ -65,7 +65,7 @@ public class UserControllerTests(TestingWebAppFactory factory) : IClassFixture<T
             Email = "",
             Password = _signUpCommand.Password
         };
-        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Test", "anything");
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Test");
 
         // Act
         var response = await _client.PostAsJsonAsync("/User/signin", badQuery);
@@ -81,7 +81,7 @@ public class UserControllerTests(TestingWebAppFactory factory) : IClassFixture<T
     {
         // Arrange
         var signUpCommand = _signUpCommand with { Email = "something@test.com" };
-        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Test", "anything");
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Test");
 
         // Act
         var response = await _client.PostAsJsonAsync("/User/signup", signUpCommand);
