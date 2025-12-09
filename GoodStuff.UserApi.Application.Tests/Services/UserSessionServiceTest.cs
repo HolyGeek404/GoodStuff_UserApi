@@ -1,3 +1,4 @@
+using System.Net;
 using GoodStuff.UserApi.Application.Services;
 using GoodStuff.UserApi.Domain.Models.User;
 using Microsoft.AspNetCore.Http;
@@ -41,7 +42,7 @@ public class UserSessionServiceTests
             },
             Connection =
             {
-                RemoteIpAddress = System.Net.IPAddress.Parse(ip)
+                RemoteIpAddress = IPAddress.Parse(ip)
             }
         };
 
@@ -70,12 +71,11 @@ public class UserSessionServiceTests
             c => c.CreateEntry(It.Is<string>(k => k.Contains("user_session_"))),
             Times.Once);
     }
-    
+
     [Fact]
     public void GetUserSession_Should_Return_Session_When_Exists()
     {
         // Arrange
-        var sessionId = "abc123";
         var userSession = new UserSession
         {
             UserData = new Users { Email = "test@example.com" },
@@ -83,7 +83,7 @@ public class UserSessionServiceTests
             LastActivity = DateTime.UtcNow.AddMinutes(-1)
         };
 
-        var context = CreateHttpContext(sessionId);
+        var context = CreateHttpContext();
         _httpContextAccessorMock.Setup(x => x.HttpContext).Returns(context);
 
         object? outValue = userSession;
@@ -185,7 +185,7 @@ public class UserSessionServiceTests
         Assert.False(result);
         _cacheMock.Verify(x => x.Remove(It.IsAny<string>()), Times.Once);
     }
-    
+
     [Fact]
     public void Validate_Should_Update_LastActivity_When_Valid()
     {
@@ -203,6 +203,7 @@ public class UserSessionServiceTests
 
         Assert.True((DateTime.UtcNow - session.LastActivity).TotalSeconds < 2);
     }
+
     [Fact]
     public void ClearUserCachedData_Should_Remove_Cache()
     {

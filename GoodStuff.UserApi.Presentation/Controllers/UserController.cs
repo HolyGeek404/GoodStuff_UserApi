@@ -52,7 +52,7 @@ public class UserController(IMediator mediator, ILogger<UserController> logger, 
         if (string.IsNullOrEmpty(signInQuery.Email) || string.IsNullOrEmpty(signInQuery.Password))
         {
             Logs.LogCouldNotSignInBecauseEmailOrPasswordIsEmpty(logger);
-            return BadRequest();
+            return BadRequest("Email or password is empty.");
         }
 
         var user = await mediator.Send(signInQuery);
@@ -99,8 +99,7 @@ public class UserController(IMediator mediator, ILogger<UserController> logger, 
 
     [HttpPost]
     [Route("accountverification")]
-    public async Task<IActionResult> AccountVerification(
-        [FromBody] AccountVerificationCommand accountVerificationCommand)
+    public async Task<IActionResult> AccountVerification([FromBody] AccountVerificationCommand accountVerificationCommand)
     {
         try
         {

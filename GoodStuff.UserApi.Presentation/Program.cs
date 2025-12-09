@@ -1,30 +1,38 @@
 using GoodStuff.UserApi.Presentation.Extensions;
 
-var builder = WebApplication.CreateBuilder(args);
+namespace GoodStuff.UserApi.Presentation;
 
-builder.Services.AddServices();
-builder.Services.AddMediatRConfig();
-builder.Services.AddAzureConfig(builder.Configuration);
-builder.Services.AddDataBaseConfig(builder.Configuration);
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerConfig(builder.Configuration);
-builder.Services.AddMemoryCache();
-builder.Logging.AddLoggingConfig();
-builder.Services.AddHttpClient();
-var app = builder.Build();
-app.UseSwagger();
-app.UseSwaggerUI(c =>
+public class Program
+{
+    public static void Main(string[] args)
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "GoodStuff User Api v1");
-        c.OAuthClientId(builder.Configuration["Swagger:SwaggerClientId"]);
-        c.OAuthUsePkce();
-        c.OAuthScopeSeparator(" ");
-    }
-);
-app.UseHttpsRedirection();
-app.UseAuthentication();
-app.UseAuthorization();
-app.MapControllers();
+        var builder = WebApplication.CreateBuilder(args);
 
-app.Run();
+        builder.Services.AddServices();
+        builder.Services.AddMediatrConfig();
+        builder.Services.AddAzureConfig(builder.Configuration);
+        // builder.Services.AddDataBaseConfig(builder.Configuration, environment: builder.Environment.EnvironmentName);
+        builder.Services.AddControllers();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerConfig(builder.Configuration);
+        builder.Services.AddMemoryCache();
+        builder.Logging.AddLoggingConfig();
+        builder.Services.AddHttpClient();
+        var app = builder.Build();
+        app.UseSwagger();
+        app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "GoodStuff User Api v1");
+                c.OAuthClientId(builder.Configuration["Swagger:SwaggerClientId"]);
+                c.OAuthUsePkce();
+                c.OAuthScopeSeparator(" ");
+            }
+        );
+        app.UseHttpsRedirection();
+        app.UseAuthentication();
+        app.UseAuthorization();
+        app.MapControllers();
+
+        app.Run();
+    }
+}

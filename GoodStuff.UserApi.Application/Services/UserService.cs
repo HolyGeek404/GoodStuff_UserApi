@@ -9,6 +9,7 @@ public class UserService(
     IUserDao userDao,
     IEmailNotificationFunctionClient emailNotificationFunctionClient,
     IPasswordService passwordService,
+    IGuidProvider guidProvider,
     ILogger<UserService> logger) : IUserService
 {
     public async Task<bool> SignUpAsync(SignUpCommand model)
@@ -25,7 +26,7 @@ public class UserService(
                 return false;
             }
 
-            var activationKey = Guid.NewGuid();
+            var activationKey = guidProvider.Get();
 
             var user = new Users
             {
