@@ -29,6 +29,9 @@ jobs:
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
         restore-keys: |
           ${{ runner.os }}-nuget-
+
+    - name: Restore
+      run: dotnet restore
       
     - name: Build
       run: dotnet build -c Release --no-restore
