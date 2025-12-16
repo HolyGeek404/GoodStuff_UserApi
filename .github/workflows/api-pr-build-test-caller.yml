@@ -6,9 +6,9 @@ on:
 
 jobs:
   call-workflow:
-    uses: HolyGeek404/goodstuff-templates/.github/workflows/api-pr-build-test.yml@v1
+    uses: HolyGeek404/goodstuff-templates/.github/workflows/api-pr-build-test.yml@main
 
   call-workflow-passing-data:
-    uses: HolyGeek404/goodstuff-templates/.github/workflows/api-pr-build-test.yml@v1
+    uses: HolyGeek404/goodstuff-templates/.github/workflows/api-pr-build-test.yml@main
     with:
       test-path: 'GoodStuff.UserApi.Application.Tests/GoodStuff.UserApi.Application.Tests.csproj'
